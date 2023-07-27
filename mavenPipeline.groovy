@@ -6,7 +6,7 @@ pipeline {
         stage("SCM Checkout"){
             steps{
                 echo "Checking Out SCM"
-                echo "Repository Selected : "
+                echo "Repository Selected : ${Repository} "
                 gitCloneCheckOut()
             }
         }
