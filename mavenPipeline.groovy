@@ -10,7 +10,7 @@ pipeline {
                 gitCloneCheckOut()
             }
         }
-    }
+
         stage("Project Build"){
             steps{
                 echo "Commencing Build"
@@ -25,6 +25,7 @@ pipeline {
                 //sonarScan()
             }
         }
+    }
 
         post {
             always{
