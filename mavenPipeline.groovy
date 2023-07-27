@@ -39,7 +39,7 @@ pipeline {
 
 
 /* FUNCTIONS */
-gitCloneCheckOut() {
+def gitCloneCheckOut() {
 
     checkout scmGit(branches: [[name: "${Branch}"]],
                     extensions: [],
@@ -47,7 +47,7 @@ gitCloneCheckOut() {
                                          url: "https://github.com/LeongJR/${Repository}"]])
 }
 
-mavenBuild() {
+def mavenBuild() {
     sh """
        echo 'Verify java version and compiler version'
        java --version
