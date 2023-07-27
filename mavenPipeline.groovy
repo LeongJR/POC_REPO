@@ -7,7 +7,7 @@ pipeline {
             steps{
                 echo "Checking Out SCM"
                 echo "Repository Selected : "
-                gitCloneCheckOut();
+                gitCloneCheckOut()
             }
         }
     }
