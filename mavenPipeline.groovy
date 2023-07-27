@@ -2,6 +2,8 @@ pipeline {
 
     agent any
 
+    tools { maven "Maven 3.9.3"}
+
     stages {
         stage("SCM Checkout"){
             steps{
@@ -48,11 +50,11 @@ def gitCloneCheckOut() {
 }
 
 def mavenBuild() {
-    sh """
+    bat '''
        echo 'Verify java version and compiler version'
        java --version
        javac --version
        mvn -f pom.xml clean install
 
-       """
+       '''
 }
