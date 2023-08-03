@@ -2,7 +2,7 @@ pipeline {
 
     agent any
 
-    tools { maven "Maven 3.9.3"}
+    tools { maven "Maven 3.9.3" }
 
     stages {
         stage("SCM Checkout"){
@@ -23,8 +23,8 @@ pipeline {
 
         stage("Sonar Scan"){
             steps{
-                echo "Commencing Sonar Scan - To be implemented"
-                //sonarScan()
+                echo "Commencing Sonar Scan"
+                sonarScan()
             }
         }
     }
@@ -50,11 +50,26 @@ def gitCloneCheckOut() {
 }
 
 def mavenBuild() {
-    bat '''
+    bat """
        echo 'Verify java version and compiler version'
-       java --version
+       java --version 
        javac --version
-       mvn -f pom.xml clean install
+       mvn -f pom.xml clean install 
+       """
+}
 
-       '''
+def sonarScan() {
+
+    bat """
+          mvn sonar:sonar -Dsonar.projectKey="${Repository}" \
+         -Dsonar.projectKey="${Repository}" \
+         -Dsonar.projectName="${Repository}-scan \
+         -Dsonar.sources=src/main \
+         -Dsonar.sourceEncoding=UTF-8 \
+         -Dsonar.language=java \
+         -Dsonar.test=src/test \
+         -Dsonar.surefire.reportsPath=target/surefire-reports \
+         -Dsonar.java.binaries=target/classes \
+         """
+
 }
