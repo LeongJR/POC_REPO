@@ -2,7 +2,7 @@ pipeline {
 
     agent any
 
-    tools { maven "Maven 3.9.3" }
+    tools { maven "Maven 3.9.3"}
 
     stages {
         stage("SCM Checkout"){
@@ -24,9 +24,15 @@ pipeline {
         stage("Sonar Scan"){
             steps{
                 echo "Commencing Sonar Scan"
-                sonarScan()
+                //sonarScan()
             }
         }
+        
+        stage("Deploy"){
+            steps{
+            deploy adapters: [tomcat9(credentialsId: 'Tomcat', path: '', url: 'http://localhost:8090')], contextPath: "${Repository}", war: '**/*.war'
+            }
+        }        
     }
 
         post {
