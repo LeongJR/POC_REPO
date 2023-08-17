@@ -67,7 +67,7 @@ def mavenBuild() {
 def sonarScan() {
 
     bat """
-          mvn sonar:sonar -Dsonar.projectKey="${Repository}" \
+          mvn sonar:sonar \
          -Dsonar.projectKey="${Repository}" \
          -Dsonar.projectName="${Repository}-scan \
          -Dsonar.sources=src/main \
