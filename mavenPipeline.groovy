@@ -69,7 +69,7 @@ def sonarScan() {
     bat """
           mvn sonar:sonar \
          -Dsonar.projectKey="${Repository}" \
-         -Dsonar.projectName="${Repository}-scan \
+         -Dsonar.projectName="${Repository}-scan" \
          -Dsonar.sources=src/main \
          -Dsonar.sourceEncoding=UTF-8 \
          -Dsonar.language=java \
