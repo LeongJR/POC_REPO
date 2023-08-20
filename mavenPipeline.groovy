@@ -77,8 +77,6 @@ def sonarScan() {
          -Dsonar.sourceEncoding=UTF-8 \
          -Dsonar.language=java \
          -Dsonar.test=src/test \
-         -Dsonar.surefire.reportsPath=target/surefire-reports \
-         -Dsonar.java.binaries=target/classes \
          """
       
 }
