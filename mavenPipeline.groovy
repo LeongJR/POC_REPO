@@ -20,19 +20,21 @@ pipeline {
 
             }
         }
-
-        stage("Sonar Scan"){
-            steps{
-                echo "Commencing Sonar Scan"
-                sonarScan()
-            }
-        }
-        
+       
         stage("Deploy"){
             steps{
             deploy adapters: [tomcat9(credentialsId: 'Tomcat', path: '', url: 'http://localhost:8090')], contextPath: "${Repository}", war: '**/*.war'
             }
-        }        
+        } 
+        
+        stage("Tests and Sonar scan"){
+            steps{
+                bat "mvn clean test"
+                echo "Commencing Sonar Scan"
+                sonarScan()
+            }
+        } 
+        
     }
 
         post {
@@ -60,12 +62,12 @@ def mavenBuild() {
        echo 'Verify java version and compiler version'
        java --version 
        javac --version
-       mvn -f pom.xml clean install 
+       mvn -f pom.xml clean install -DskipTests=true
        """
 }
 
 def sonarScan() {
-
+stage("Sonar Scan"){
     bat """
           mvn sonar:sonar \
          -Dsonar.projectKey="${Repository}" \
@@ -77,5 +79,5 @@ def sonarScan() {
          -Dsonar.surefire.reportsPath=target/surefire-reports \
          -Dsonar.java.binaries=target/classes \
          """
-
+      }
 }
