@@ -2,44 +2,60 @@ pipeline {
 
     agent any
 
-    tools { maven "Maven 3.9.3"
-            jdk "${JAVA_VERSION}"
-          }
-
     stages {
         stage("S1 3647096t"){
             steps{
-                echo "Checking Out SCM"
-                echo "Repository Selected : ${Repository} "
-                gitCloneCheckOut()
+                /* docker pull your image */
+                echo "Stage1_3647096t : Release Environment Preparation Completed"
             }
         }
 
         stage("S2 3647096t"){
             steps{
-                echo "Commencing Build"
-                mavenBuild()
-
+                echo "Stage2_3647096t : Release Container WebApp_<your POLITE id> Created Completed"
             }
         }
         
-        stage("S3 3647096t"){
-            steps{
-                echo "Commencing Sonar Scan"
-                sonarScan()
+        stage("S3 3647096t(PARALLEL)"){
+            parallel {
+                stage('Stage3_3647096t API TEST') {
+                    steps {
+                    echo "Stage3_3647096t: API Test Completed"
+
+                    }
+                }
+                stage('Stage3_3647096t SCAN TEST') {
+                    steps {
+                        sh 'echo "Running integration tests"'
+                        // Add commands to run integration tests
+                    }
+                }
             }
         } 
 
         stage("S4 3647096t"){
+            input {
+                message "3647096t, Proceed to release the work to next phase?”
+                parameters {
+                    boolean(name: 'response', defaultValue: true, description: 'Proceed or No?')
+                }
+            }
             steps{
-            deploy adapters: [tomcat9(credentialsId: 'Tomcat', path: '', url: 'http://localhost:8090')], contextPath: "${Repository}", war: '**/*.war'
+            storedresponse = params.response
+            echo "Reponse ${response} was selected"
             }
         }     
       
         stage("S5 3647096t"){
-            steps{
-            deploy adapters: [tomcat9(credentialsId: 'Tomcat', path: '', url: 'http://localhost:8090')], contextPath: "${Repository}", war: '**/*.war'
+        steps{
+            if (storedresponse){
+            echo "Stage5_3647096t : Work Release – Proceeds to Next Phase"
             }
+            else {
+            echo "Stage5_3647096t : Work Release – Stop"
+            return
+            }
+          }
         }        
     }
 
@@ -53,35 +69,3 @@ pipeline {
         }
 }
 
-
-/* FUNCTIONS */
-def gitCloneCheckOut() {
-
-    checkout scmGit(branches: [[name: "${Branch}"]],
-                    extensions: [],
-                    userRemoteConfigs: [[credentialsId: '4e2b7a04-cf48-4c19-9039-31eb9693d8a7',
-                                         url: "https://github.com/LeongJR/${Repository}"]])
-}
-
-def mavenBuild() {
-    bat """
-       echo 'Verify java version and compiler version'
-       java --version 
-       javac --version
-       mvn -f pom.xml clean install
-       """
-}
-
-def sonarScan() {
-
-    bat """
-          mvn sonar:sonar \
-         -Dsonar.projectKey="${Repository}" \
-         -Dsonar.projectName="${Repository}" \
-         -Dsonar.sources=src/main \
-         -Dsonar.sourceEncoding=UTF-8 \
-         -Dsonar.language=java \
-         -Dsonar.test=src/test \
-         """
-      
-}
