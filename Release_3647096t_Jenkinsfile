@@ -35,7 +35,7 @@ pipeline {
 
         stage("S4 3647096t"){
             input {
-                message : "3647096t, Proceed to release the work to next phase?”
+                message '3647096t, Proceed to release the work to next phase?'
                 parameters {
                     boolean(name: 'response', defaultValue: true, description: 'Proceed or No?')
                 }
