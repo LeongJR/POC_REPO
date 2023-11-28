@@ -36,8 +36,9 @@ pipeline {
         stage("S4 3647096t"){
         steps{
 			script {
-            storedresponse = input message: '3647096t, Proceed to release the work to next phase?', parameters: [choice(choices: ['yes', 'no'], description: 'Proceed or no?', name: 'response')]     
-            echo "Reponse ${response} was selected"
+            userResponse = input message: '3647096t, Proceed to release the work to next phase?', parameters: [choice(choices: ['yes', 'no'], description: 'Proceed or no?', name: 'response')]     
+            echo "Reponse ${userResponse} was selected"
+
             }
 		  }
         }     
@@ -45,7 +46,7 @@ pipeline {
         stage("S5 3647096t"){
         steps{
 		 script{
-            if ("${storedresponse}" == 'yes'){
+            if (userResponse == 'yes'){
             echo "Stage5_3647096t : Work Release – Proceeds to Next Phase"
             }
             else {
@@ -66,4 +67,3 @@ pipeline {
             }
         }
 }
-
