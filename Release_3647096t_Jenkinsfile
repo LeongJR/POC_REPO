@@ -42,7 +42,7 @@ pipeline {
                 }
                 stage('Stage3_3647096t SCAN TEST') {
                     steps {
-                        echo "Running integration tests"
+                        echo "Stage3_3647096t: SCAN Test Completed"
                         // Add commands to run integration tests
                     }
                 }
