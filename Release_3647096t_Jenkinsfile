@@ -5,13 +5,29 @@ pipeline {
     stages {
         stage("S1 3647096t"){
             steps{
-                /* docker pull your image */
+                echo "Listing all images in local"
+                sh ' docker images '
+                echo ''
+                echo "Listing all containers in workspace (before)"
+                sh 'docker ps -a'
+                echo " "
+                echo 'Removing any containers of WebApp_3647096t, error message is expected if container does not exist.'
+                sh 'docker rm -f WebApp_3647096t'
+                echo ''
+
                 echo "Stage1_3647096t : Release Environment Preparation Completed"
             }
         }
 
         stage("S2 3647096t"){
             steps{
+                
+                sh 'docker rm -f WebApp_3647096t'
+                sh "docker run -d -it -p 31200:8080 --name=WebApp_3647096t wb1_image_3647096t /bin/bash -c 'apt-get update ; apt-get install apache2'"
+                
+                echo "Listing all containers in workspace (after)"
+				sh 'docker ps -a'
+				echo''
                 echo "Stage2_3647096t : Release Container WebApp_<your POLITE id> Created Completed"
             }
         }
@@ -35,25 +51,25 @@ pipeline {
 
         stage("S4 3647096t"){
         steps{
-			script {
+	  script {
             userResponse = input message: '3647096t, Proceed to release the work to next phase?', parameters: [choice(choices: ['yes', 'no'], description: 'Proceed or no?', name: 'response')]     
             echo "Reponse ${userResponse} was selected"
 
-            }
-		  }
+             }
+           }
         }     
       
         stage("S5 3647096t"){
         steps{
-		 script{
+	  script{
             if (userResponse == 'yes'){
             echo "Stage5_3647096t : Work Release – Proceeds to Next Phase"
             }
             else {
             echo "Stage5_3647096t : Work Release – Stop"
             return
-			 }
-			}
+	     }
+	    }
           }
         }        
     }
