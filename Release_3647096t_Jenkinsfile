@@ -26,8 +26,8 @@ pipeline {
                 sh "docker run -d -it -p 31200:8080 --name=WebApp_3647096t wb1_image_3647096t /bin/bash -c 'apt-get update ; apt-get install apache2'"
                 
                 echo "Listing all containers in workspace (after)"
-				sh 'docker ps -a'
-				echo''
+		sh 'docker ps -a'
+		echo''
                 echo "Stage2_3647096t : Release Container WebApp_<your POLITE id> Created Completed"
             }
         }
