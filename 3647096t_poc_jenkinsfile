@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     stages {
-        stage("S1 3647096t"){
+        stage("ST1 3647096t"){
             steps{
                 echo "Listing all images in local"
                 sh ' docker images '
@@ -19,7 +19,7 @@ pipeline {
             }
         }
 
-        stage("S2 3647096t"){
+        stage("ST2 3647096t"){
             steps{
                 
                 sh 'docker rm -f WebApp_3647096t'
@@ -32,24 +32,11 @@ pipeline {
             }
         }
         
-        stage("S3 3647096t(PARALLEL)"){
-            parallel {
-                stage('Stage3_3647096t API TEST') {
-                    steps {
-                    echo "Stage3_3647096t: API Test Completed"
+        stage("ST3 3647096t(PARALLEL)"){
 
-                    }
-                }
-                stage('Stage3_3647096t SCAN TEST') {
-                    steps {
-                        echo "Stage3_3647096t: SCAN Test Completed"
-                        // Add commands to run integration tests
-                    }
-                }
-            }
         } 
 
-        stage("S4 3647096t"){
+        stage("ST4 3647096t"){
         steps{
 	  script {
             userResponse = input message: '3647096t, Proceed to release the work to next phase?', parameters: [choice(choices: ['yes', 'no'], description: 'Proceed or no?', name: 'response')]     
@@ -59,7 +46,7 @@ pipeline {
            }
         }     
       
-        stage("S5 3647096t"){
+        stage("ST5 3647096t"){
         steps{
 	  script{
             if (userResponse == 'yes'){
@@ -71,7 +58,19 @@ pipeline {
 	     }
 	    }
           }
-        }        
+        }
+
+        stage("ST6 3647096t"){
+        steps{
+	  script{
+            if (userResponse == 'yes'){
+            echo "Stage5_3647096t : Work Release – Proceeds to Next Phase"
+            }
+            else {
+            echo "Stage5_3647096t : Work Release – Stop"
+            return
+	     }
+	    }
     }
 
         post {
