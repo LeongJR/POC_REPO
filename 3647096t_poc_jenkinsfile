@@ -42,6 +42,7 @@ pipeline {
         
         stage("ST3 3647096t"){
 		//execute curl
+		sh 'curl –Is http://TESTsvr3647096t.localdomain | head –n 1  > /tmp/TEST-result-file'
 		echo "ST3 3647096t: Test result for TEST server is generated : TEST-result-file"
         } 
 
