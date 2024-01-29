@@ -49,7 +49,7 @@ pipeline {
         stage("ST4 3647096t"){
         steps{
 	  script {
-            userResponse = input message: 'ST4 3647096t, TEST server's testing results have been inspected', parameters: [choice(choices: ['Proceed Production', 'Rollback TEST'], description: 'Proceed or Rollback?', name: 'response')]     
+            userResponse = input message: 'ST4 3647096t, TEST server\'s testing results have been inspected', parameters: [choice(choices: ['Proceed Production', 'Rollback TEST'], description: 'Proceed or Rollback?', name: 'response')]     
             echo "Reponse ${userResponse} was selected"
 
              }
