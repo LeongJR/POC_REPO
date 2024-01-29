@@ -5,41 +5,40 @@ pipeline {
     stages {
         stage("ST1 3647096t"){
             steps{
-                echo "Listing all images in local"
-                sh ' docker images '
-                echo ''
-                echo "Listing all containers in workspace (before)"
-                sh 'docker ps -a'
-                echo " "
-                echo 'Removing any containers of WebApp_3647096t, error message is expected if container does not exist.'
-                sh 'docker rm -f WebApp_3647096t'
-                echo ''
-
-                echo "Stage1_3647096t : Release Environment Preparation Completed"
+                echo "ST1 3647096t: Environment prepared. Prepared to rollout to test server"
             }
         }
 
         stage("ST2 3647096t"){
             steps{
                 
-                sh 'docker rm -f WebApp_3647096t'
-                sh "docker run -d -it -p 31200:8080 --name=WebApp_3647096t wb1_image_3647096t /bin/bash -c 'apt-get update ; apt-get install apache2'"
-                
-                echo "Listing all containers in workspace (after)"
-		sh 'docker ps -a'
-		echo''
-                echo "Stage2_3647096t : Release Container WebApp_<your POLITE id> Created Completed"
+                echo 'Removing old backup image, error message is expected if container does not exist.'
+                sh 'docker image rm BKUP-TEST-IMAGE'
+                echo ''
+
+		echo 'Making backup image of test server'
+		def container_id = sh 'docker ps | grep 'TEST3' | awk '{print $2}''
+		echo "${container_id}"
+		sh 'docker commit "${container_id}" BKUP-TEST-IMAGE'
+	
+		echo "Listing all images in local after creation"
+                sh ' docker images '
+                echo ''
+
+		//run bolt script
+		echo "ST2 3647096t: Test server is backed up. Test server is updated."
             }
         }
         
-        stage("ST3 3647096t(PARALLEL)"){
-
+        stage("ST3 3647096t"){
+		//execute curl
+		echo "ST3 3647096t: Test result for TEST server is generated : TEST-result-file"
         } 
 
         stage("ST4 3647096t"){
         steps{
 	  script {
-            userResponse = input message: '3647096t, Proceed to release the work to next phase?', parameters: [choice(choices: ['yes', 'no'], description: 'Proceed or no?', name: 'response')]     
+            userResponse = input message: 'ST4 3647096t, TEST server's testing results have been inspected', parameters: [choice(choices: ['Proceed Production', 'Rollback TEST'], description: 'Proceed or Rollback?', name: 'response')]     
             echo "Reponse ${userResponse} was selected"
 
              }
@@ -49,12 +48,12 @@ pipeline {
         stage("ST5 3647096t"){
         steps{
 	  script{
-            if (userResponse == 'yes'){
-            echo "Stage5_3647096t : Work Release – Proceeds to Next Phase"
+            if (userResponse == 'Proceed Production'){
+            echo "ST5 3647096t : Proceed to PRODUCTION phase"
+		//execute bolt script for prod server
             }
             else {
-            echo "Stage5_3647096t : Work Release – Stop"
-            return
+            echo "ST5 3647096t : Rollback test server"
 	     }
 	    }
           }
@@ -63,11 +62,11 @@ pipeline {
         stage("ST6 3647096t"){
         steps{
 	  script{
-            if (userResponse == 'yes'){
-            echo "Stage5_3647096t : Work Release – Proceeds to Next Phase"
+            if (userResponse == 'Proceed Production'){
+            echo "ST6 3647096t : Production server updated"
             }
             else {
-            echo "Stage5_3647096t : Work Release – Stop"
+            echo "ST6 3647096t : TEST server is rollback"
             return
 	     }
 	    }
