@@ -19,10 +19,10 @@ pipeline {
 		echo 'Making backup image of test server'
 		def container_id = sh 'docker ps | grep 'TEST3' | awk '{print $2}''
 		echo "${container_id}"
-		sh 'docker commit "${container_id}" BKUP-TEST-IMAGE'
+		sh "docker commit "${container_id}" BKUP-TEST-IMAGE"
 	
 		echo "Listing all images in local after creation"
-                sh ' docker images '
+                sh 'docker images'
                 echo ''
 
 		//Clone repo and run bolt script
