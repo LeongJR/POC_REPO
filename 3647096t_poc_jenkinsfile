@@ -17,9 +17,9 @@ pipeline {
                 echo ''
 
 		echo 'Making backup image of test server'
-		def container_id = sh 'docker ps | grep TESTsvr3 | awk \'{print $1}\''
+		def container_id = sh (returnStdout:true, script:'docker ps | grep TESTsvr3 | awk \'{print $1}\'').trim()
 		echo "${container_id}"
-		sh "docker commit \"${container_id}\" bkup-test-image"
+		sh "docker commit ${container_id} bkup-test-image"
 	
 		echo "Listing all images in local after creation"
                 sh 'docker images'
