@@ -13,7 +13,7 @@ pipeline {
             steps{
 	     script {
                 echo 'Removing old backup image, error message is expected if container does not exist.'
-                sh 'docker image rm bkup-test-image'
+                sh 'docker image rm bkup-test-image && (echo 'No such image' || exit 0)'
                 echo ''
 
 		echo 'Making backup image of test server'
