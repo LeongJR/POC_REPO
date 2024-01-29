@@ -13,13 +13,13 @@ pipeline {
             steps{
 	     script {
                 echo 'Removing old backup image, error message is expected if container does not exist.'
-                sh 'docker image rm bkup-test-image ; exit 0'
+                sh 'docker image rm bkup-test-image || exit 0'
                 echo ''
 
 		echo 'Making backup image of test server'
-		def container_id = sh 'docker ps | grep 'TEST3' | awk '{print $2}''
+		def container_id = sh 'docker ps | grep TESTsvr3 | awk \'{print $1}\''
 		echo "${container_id}"
-		sh "docker commit "${container_id}" bkup-test-image"
+		sh "docker commit \"${container_id}\" bkup-test-image"
 	
 		echo "Listing all images in local after creation"
                 sh 'docker images'
