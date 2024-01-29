@@ -32,7 +32,7 @@ pipeline {
 	   	 cd /tmp/clone;
 	   	 git clone https://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@github.com/LeongJR/POC_REPO.git;
                  targets='TEST3647096t';
-                 locate_script='/tmp/clone/POC_REPO/script_to_run';
+                 locate_script='/tmp/clone/POC_REPO/3647096t_script';
                  bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
                  '''
 		echo ''
@@ -80,7 +80,7 @@ pipeline {
 	   	 cd /tmp/clone;
 	   	 git clone https://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@github.com/LeongJR/POC_REPO.git;
                  targets='PROD3647096t';
-                 locate_script='/tmp/clone/POC_REPO/script_to_run';
+                 locate_script='/tmp/clone/POC_REPO/3647096t_script';
                  bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
         	'''
 
