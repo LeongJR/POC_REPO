@@ -11,6 +11,7 @@ pipeline {
 
         stage("ST2 3647096t"){
             steps{
+	     script {
                 echo 'Removing old backup image, error message is expected if container does not exist.'
                 sh 'docker image rm BKUP-TEST-IMAGE'
                 echo ''
@@ -36,17 +37,16 @@ pipeline {
                  '''
 		echo ''
 		echo "ST2 3647096t: Test server is backed up. Test server is updated."
+		}
             }
         }
         
         stage("ST3 3647096t"){
 	 steps {
-	 script {
 		//execute curl
 		sh 'curl –Is http://TESTsvr3647096t.localdomain | head –n 1  > /tmp/TEST-result-file'
 		sh 'cat /tmp/TEST-result-file'
 		echo "ST3 3647096t: Test result for TEST server is generated : TEST-result-file"
-	}
 	  }
         	} 
 
@@ -55,7 +55,6 @@ pipeline {
 	  script {
             userResponse = input message: 'ST4 3647096t, TEST server\'s testing results have been inspected', parameters: [choice(choices: ['Proceed Production', 'Rollback TEST'], description: 'Proceed or Rollback?', name: 'response')]     
             echo "Reponse ${userResponse} was selected"
-
              }
            }
         }     
@@ -106,5 +105,5 @@ pipeline {
                         notFailBuild: true)
             }
         }
- }
+   }
 }
