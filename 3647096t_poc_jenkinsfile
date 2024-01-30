@@ -33,7 +33,7 @@ pipeline {
 	   	 git clone https://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@github.com/LeongJR/POC_REPO.git;
                  targets='TESTsvr3647096t';
                  locate_script='/tmp/clone/POC_REPO/3647096t_script';
-                 bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as clientadm;
+                 bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
                  '''
 		echo ''
 		echo "ST2 3647096t: Test server is backed up. Test server is updated."
@@ -72,7 +72,7 @@ pipeline {
 	   	 git clone https://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@github.com/LeongJR/POC_REPO.git;
                  targets='PRODsvr3647096t';
                  locate_script='/tmp/clone/POC_REPO/3647096t_script';
-                 bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as clientadm;
+                 bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
         	'''
             }
             else {
