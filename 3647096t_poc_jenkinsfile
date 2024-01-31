@@ -31,7 +31,7 @@ pipeline {
                  puppet resource file /tmp/clone ensure=directory;
 	   	 cd /tmp/clone;
 	   	 git clone https://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@github.com/LeongJR/POC_REPO.git;
-                 targets='TESTsvr3647096t';
+                 targets='testsvr3647096t.localdomain';
                  locate_script='/tmp/clone/POC_REPO/3647096t_script';
                  bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
                  '''
@@ -44,7 +44,7 @@ pipeline {
         stage("ST3 3647096t"){
 	 steps {
 		//execute curl
-		sh 'curl –Is http://TESTsvr3647096t.localdomain | head –n 1 > /tmp/TEST-result-file'
+		sh 'curl –Is http://testsvr3647096t.localdomain | head –n 1 > /tmp/TEST-result-file'
 		sh 'cat /tmp/TEST-result-file'
 		echo "ST3 3647096t: Test result for TEST server is generated : TEST-result-file"
 	  }
@@ -70,7 +70,7 @@ pipeline {
                  puppet resource file /tmp/clone ensure=directory;
 	   	 cd /tmp/clone;
 	   	 git clone https://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@github.com/LeongJR/POC_REPO.git;
-                 targets='PRODsvr3647096t';
+                 targets='prodsvr3647096t.localdomain';
                  locate_script='/tmp/clone/POC_REPO/3647096t_script';
                  bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
         	'''
