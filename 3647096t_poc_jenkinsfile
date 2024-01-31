@@ -31,7 +31,7 @@ pipeline {
                  puppet resource file /tmp/clone ensure=directory;
 	   	 cd /tmp/clone;
 	   	 git clone https://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@github.com/LeongJR/POC_REPO.git;
-                 targets='testsvr3647096t.localdomain';
+                 targets='TESTsvr3647096t';
                  locate_script='/tmp/clone/POC_REPO/3647096t_script';
                  bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
                  '''
@@ -70,7 +70,7 @@ pipeline {
                  puppet resource file /tmp/clone ensure=directory;
 	   	 cd /tmp/clone;
 	   	 git clone https://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@github.com/LeongJR/POC_REPO.git;
-                 targets='prodsvr3647096t.localdomain';
+                 targets='PPRODsvr3647096t';
                  locate_script='/tmp/clone/POC_REPO/3647096t_script';
                  bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
         	'''
