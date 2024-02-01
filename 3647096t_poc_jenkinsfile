@@ -44,7 +44,7 @@ pipeline {
         stage("ST3 3647096t"){
 	 steps {
 		//execute curl
-		sh 'curl –Is TESTsvr3647096t > /tmp/TEST-result-file'
+		sh 'curl -Is TESTsvr3647096t > /tmp/TEST-result-file'
 		sh 'head -n 1 /tmp/TEST-result-file'
 		echo "ST3 3647096t: Test result for TEST server is generated : TEST-result-file"
 	  }
@@ -70,7 +70,7 @@ pipeline {
                  puppet resource file /tmp/clone ensure=directory;
 	   	 cd /tmp/clone;
 	   	 git clone https://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@github.com/LeongJR/POC_REPO.git;
-                 targets='PPRODsvr3647096t';
+                 targets='PRODsvr3647096t';
                  locate_script='/tmp/clone/POC_REPO/3647096t_script';
                  bolt script run $locate_script -t $targets -u clientadm -p user123 --no-host-key-check --run-as root;
         	'''
