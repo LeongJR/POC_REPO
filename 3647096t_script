@@ -8,5 +8,5 @@ puppet resource file /tmp/clone ensure=absent force=true
 puppet resource file /tmp/clone ensure=directory
 cd /tmp/clone
 git clone https://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@github.com/LeongJR/POC_REPO.git
-cp -p /tmp/clone/POC_REPO/3647096t_index.html /var/www/html
+cp -p /tmp/clone/POC_REPO/3647096t_index.html /var/www/html/index.html
 ls -l
